@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="admin-modelo :: header"></head>
+<body>
+<nav th:replace="admin-modelo :: navbar"></nav>
+<div class="row paddingTop">
+        <div class="col s3" th:replace="admin-modelo :: admin-menu"> </div>
+
+        <div class="col s9">
+            <nav>
+                <div class="nav-wrapper">
+                    <div class="col s12">
+                        <a href="#!">Avisos</a>
+                    </div>
+                </div>
+            </nav>
+            <div class="row">
+                <div class="col s2">
+                    <div class="card-panel center">
+                        <span>Total Médicos</span>
+                        <h2 th:text="${totalMedico}"></h2>
+                    </div>
+                </div>
+
+                <div class="col s2">
+                    <div class="card-panel center">
+                        <span>Total usuários</span>
+                        <h2 th:text="${totalPaciente}"></h2>
+                    </div>
+                </div>
+
+                <div class="col s2">
+                    <div class="card-panel center">
+                        <span>Especialidades</span>
+                        <h2 th:text="${totalEspecializacao}"></h2>
+                    </div>
+                </div>
+
+                <div class="col s2">
+                    <div class="card-panel center">
+                        <span>Consultas solicitadas</span>
+                        <h2 th:text="${totalConsultas}"></h2>
+                    </div>
+                </div>
+
+                <div class="col s2">
+                    <div class="card-panel center">
+                        <span>Arquivos enviados</span>
+                        <h2>3</h2>
+                    </div>
+                </div>
+
+                <div class="col s2">
+                    <div class="card-panel center">
+                        <span>Visitas</span>
+                        <h2>3042</h2>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="collapsible" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">autorenew</i>
+                        Trafego estimado utilizado
+                    </div>
+                    <div class="collapsible-body">
+                        <p>Março: 20MB</p>
+                        <p>Abril: 60MB</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">chat</i>
+                        Últimos comentários
+                    </div>
+                    <div class="collapsible-body">
+                        <p><i>"Novo comentário X"</i></p>
+                        <p><i>"Novo comentário Y"</i></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">place</i>
+                        Alguma coisa
+                        <span class="badge">0</span></div>
+                    <div class="collapsible-body"><p>Nenhuma solicitação</p></div>
+                </li>
+            </ul>
+
+            <div class="row">
+                <div class="col s2">
+                    <img src="https://www.tempo.com/wimages/foto3ddf21b7e871f95fa94644af3261673f.png" />
+                </div>
+
+                <div class="col s10">
+                    <div class="feedgrabbr_widget" id="fgid_2a425329a4ec36d79482f42b9"></div>
+                    <script>if (typeof (fg_widgets) === "undefined") fg_widgets = new Array(); fg_widgets.push("fgid_2a425329a4ec36d79482f42b9");</script>
+                    <script async="async" src="https://www.feedgrabbr.com/widget/fgwidget.js"></script>
+                </div>
+            </div>
+        </div>
+</div>
+<javascript th:replace="admin-modelo :: javascripts"></javascript>
+</body>
+</html>

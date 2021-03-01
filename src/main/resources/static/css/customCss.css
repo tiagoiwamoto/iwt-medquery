@@ -1,0 +1,258 @@
+@import url('https://fonts.googleapis.com/css?family=Shadows+Into+Light+Two');
+
+.titulo{
+    font-family: 'Shadows Into Light Two', cursive;
+    font-size: 38px;
+}
+
+.paddingTop{
+    padding-top: 10px;
+}
+
+.loginBack{
+    background-image: url("../images/back_health.jpg");
+    background-size: cover;
+}
+
+.profileBack{
+    background-image: url("../images/login_back.jpg");
+    background-size: cover;
+    opacity: 0.6;
+}
+
+hr{
+    border: dashed 1px #000000;
+}
+
+/* inicio customizando input */
+.row .input-field input:focus {
+    border-bottom: 1px solid dodgerblue !important;
+    box-shadow: 0 1px 0 0 dodgerblue !important;
+}
+
+.medicoInfo{
+    font-family: 'Acme', sans-serif;
+    font-size: 24px;
+}
+
+.vertical-align{
+    vertical-align: middle;
+}
+
+.medicoInfoTitulo{
+    font-family: 'Acme', sans-serif;
+}
+
+/* inicio customizando input */
+.row .input-field input:focus {
+    border-bottom: 1px solid dodgerblue !important;
+    box-shadow: 0 1px 0 0 dodgerblue !important;
+}
+
+.input-field input:focus + label {
+    color: dodgerblue !important;
+}
+
+.input-field .prefix.active {
+    color: dodgerblue;
+}
+/* fim customizando input */
+
+.row .materialize-textarea:focus {
+    border-bottom: 1px solid dodgerblue !important;
+    box-shadow: 0 1px 0 0 dodgerblue !important;
+}
+
+.materialize-textarea:focus + label {
+    color: dodgerblue !important;
+}
+
+.materialize-textarea .prefix.active {
+    color: dodgerblue;
+}
+/* fim customizando input */
+
+.paddingLeft{
+    padding-left: 10px;
+}
+
+.w-25{
+    width: 25%;
+}
+.w-75{
+    width: 75%;
+}
+.w-100{
+    width: 100%;
+}
+
+/* The alert message box */
+.alertRed {
+    padding: 20px;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
+}
+
+.alertBlue {
+    padding: 20px;
+    background-color: #00b0ff; /* Red */
+    color: white;
+    margin-bottom: 15px;
+}
+
+.alertGreen {
+    padding: 20px;
+    background-color: #2E7D32; /* Red */
+    color: white;
+    margin-bottom: 15px;
+}
+
+.alertYellow {
+    padding: 20px;
+    background-color: #f9a825; /* Red */
+    color: white;
+    margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+    color: black;
+}
+
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+.noBorders{
+    border: none;
+    box-shadow: none!important;
+}
+
+.profileLink{
+    color: #ffffff;
+}
+
+.profileLink :hover{
+    color: #f9a825;
+}
+
+div.page-announce {
+    min-height: 100px;
+    height: auto;
+    background-color: #2962ff;
+    margin-bottom: 10px;
+}
+
+h1.page-announce-text {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 100;
+    font-size: 56px;
+    color: #fff;
+    line-height: 0.5em;
+    margin-left: 50px;
+}
+
+.menuOver{}
+
+.menuOver :hover{
+    color: #f9a825!important;
+}
+
+.material-tooltip {
+    display: hidden;
+}
+
+.bg-aqua {
+    background-color: #00c0ef !important;
+}
+
+.bg-green {
+    background-color: #00a65a !important;
+}
+
+.bg-yellow {
+    background-color: #f39c12 !important;
+}
+
+.bg-red {
+    background-color: #dd4b39 !important;
+}
+
+.small-box {
+    border-radius: 2px;
+    position: relative;
+    display: block;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.small-box>.inner {
+    padding: 10px;
+}
+
+.small-box h3 {
+    font-size: 38px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+    white-space: nowrap;
+    padding: 0;
+    color: #fff;
+}
+
+.small-box p {
+    color: #fff;
+}
+
+.small-box .icon {
+    -webkit-transition: all .3s linear;
+    -o-transition: all .3s linear;
+    transition: all .3s linear;
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    z-index: 0;
+    font-size: 90px;
+    color: rgba(0, 0, 0, 0.15);
+}
+
+.small-box>.small-box-footer {
+    position: relative;
+    text-align: center;
+    padding: 3px 0;
+    color: rgba(255, 255, 255, 0.8);
+    display: block;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+}
+
+.element {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+
+@media print
+{
+    .no-print
+    {
+        display: none !important;
+    }
+}

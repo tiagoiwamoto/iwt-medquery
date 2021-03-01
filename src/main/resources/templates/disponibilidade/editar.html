@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="admin-modelo :: header">
+</head>
+<body>
+<nav th:replace="admin-modelo :: navbar"></nav>
+<div class="row paddingTop">
+    <div class="col s3" th:replace="admin-modelo :: admin-menu"> </div>
+
+    <div class="col s9">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!">Especialistas</a>
+                </div>
+            </div>
+        </nav>
+        <div class="row" th:object="${especializacao}">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="nome" type="text" class="validate" th:field="*{nome}" />
+                    <input id="codigo" type="hidden" th:field="*{codigo}" />
+                    <label for="nome">Nome</label>
+                </div>
+
+                <div class="col s12">
+                    <p>Palavras chaves: </p>
+                    <div class="chip orange darken-1" th:each="palavra: ${palavras}">
+                        <span th:text="${palavra}"></span>
+                    </div>
+                </div>
+
+                <div class="input-field col s12">
+                    <textarea id="descricao" class="materialize-textarea" th:field="*{descricao}"></textarea>
+                    <label for="descricao">Descrição</label>
+                </div>
+            </div>
+            <div class="center"><button id="salvar" class="btn btn-large green lighten-1">Gravar</button> </div>
+        </div>
+
+
+    </div>
+</div>
+<javascript th:replace="admin-modelo :: javascripts"></javascript>
+<script>
+    $(document).ready(function(){
+
+        $("#salvar").click(function() {
+            var nome = $("#nome").val();
+            var descricao = $("#descricao").val();
+            var codigo = $("#codigo").val();
+
+            $.post(
+                "/Especializacao/Editar",
+                { nome: nome, descricao: descricao, codigo: codigo },
+                function(data) {
+                    if(data.ok){
+                        Materialize.toast(data.msg, 4000);
+                        Materialize.toast("Voltar para lista de especializações? " + '<a href="/Especializacao/" class='btn blue'>Sim</a>', 10000);
+                    }else{
+                        Materialize.toast(data.msg, 4000);
+                    }
+                }
+            );
+        });
+
+
+
+        $('.chips-placeholder').material_chip({
+            placeholder: 'Palavra chave',
+            secondaryPlaceholder: '+Tag',
+        });
+    });
+</script>
+</body>
+</html>

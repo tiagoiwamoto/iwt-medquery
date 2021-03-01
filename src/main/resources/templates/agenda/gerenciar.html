@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="admin-modelo :: header">
+</head>
+<body>
+<div th:if="${msgAgenda != null}">
+    <script>
+        Materialize.toast('<span th:text="${msgAgenda}"></span>', 5000);
+    </script>
+</div>
+<nav th:replace="admin-modelo :: navbar"></nav>
+<div class="row paddingTop">
+    <div class="col s3" th:replace="admin-modelo :: admin-menu"> </div>
+
+    <div class="col s9">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!">Agenda</a>
+                </div>
+            </div>
+        </nav>
+        <br />
+        <a href="/" class="btn btn-large blue lighten-1 waves-effect waves-light">Nova</a>
+            <table class="highlight">
+                <thead>
+                <tr>
+                    <th>Médico</th>
+                    <th>Dia Consulta</th>
+                    <th>Hora</th>
+                    <th>Paciente</th>
+                    <th class="center">Confirmado</th>
+                    <th class="center">Cancelado</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="agenda: ${agenda}">
+                    <td th:text="${agenda.medico.nomeCompleto}"></td>
+                    <td th:text="${agenda.diaConsulta}"></td>
+                    <td th:text="${agenda.horaConsulta}"></td>
+                    <td th:text="${agenda.paciente.nome}"></td>
+                    <td class="center">
+                        <a id="confirmar" href="#" th:if="${agenda.confirmado == 0 and agenda.cancelado == 0 or agenda.confirmado == null and agenda.cancelado == null}" th:onclick="'confirmar(\'/Agenda/Confirmar/' + ${agenda.codigo} + '\');'" class="btn green lighten-1 waves-effect waves-light">Confirmar</a>
+                        <i id="confirmado" th:if="${agenda.confirmado == 1}" class="material-icons blue-text">check</i>
+                    </td>
+                    <td class="center">
+                        <a id="cancelar" href="#" th:if="${agenda.cancelado == 0 and agenda.confirmado == 0 or agenda.cancelado == null and agenda.confirmado == null}" th:onclick="'cancelar(\'/Agenda/Cancelar/' + ${agenda.codigo} + '\');'" class="btn yellow darken-1 waves-effect waves-light">Cancelar</a>
+                        <i id="cancelado" th:if="${agenda.cancelado == 1}" class="material-icons red-text">check</i>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+    </div>
+</div>
+<javascript th:replace="admin-modelo :: javascripts"></javascript>
+<script>
+
+    function confirmar(url) {
+        Materialize.toast('Confirma agendamento ? <a href="' + url + '" class='btn blue'>Sim</a>', 10000);
+    }
+
+    function cancelar(url) {
+        Materialize.toast('Confirma cancelamento ? <a href="' + url + '" class='btn blue'>Sim</a>', 10000);
+    }
+</script>
+</body>
+</html>

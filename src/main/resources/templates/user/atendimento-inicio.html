@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="user-modelo :: header">
+    <style>
+
+        .scrollbar
+        {
+            margin-left: 30px;
+            float: left;
+            height: 300px;
+            width: 65px;
+            background: #F5F5F5;
+            overflow-y: scroll;
+            margin-bottom: 25px;
+        }
+        #chat::-webkit-scrollbar-track
+        {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            background-color: #F5F5F5;
+        }
+
+        #chat::-webkit-scrollbar
+        {
+            width: 6px;
+            background-color: #F5F5F5;
+        }
+
+        #chat::-webkit-scrollbar-thumb
+        {
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+<nav th:replace="user-modelo :: navbar"></nav>
+<div class="row paddingTop">
+    <div class="col s3" th:replace="user-modelo :: user-menu"> </div>
+
+    <div class="col s9">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!">Atendimento</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="row paddingTop">
+
+            <div class="col s2"><a th:href="@{/Exame/{urlArquivo}(urlArquivo=${urlArquivo})}" target="_blank" class="btn blue darken-1 waves-effect tooltipped" data-position="bottom" data-delay="50" th:attr="data-tooltip=${tamanho + ' | ' + appTipo}">DOWNLOAD</a></div>
+            <div class="col s10"><span th:text="${descricao}"></span></div>
+
+            <div class="col s12">
+                <div id="chat" class="scrollbar" style="overflow-y: scroll; min-height: 400px; max-height: 400px;">
+                    <div class="center" th:if="${chat.isEmpty()}">Nenhuma mensagem !</div>
+                    <div class="col s12 m8 offset-m2 l6 offset-l3" th:each="chat: ${chat}">
+                        <div class="card-panel transparent z-depth-1">
+                            <div class="row valign-wrapper">
+                                <span class="black-text" th:text="${chat.mensagem}"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col s12 m8 offset-m2 l6 offset-l3">
+                    <div class="input-field col s8" th:object="${medico}">
+                        <input id="msg" name="mensagem" type="text" class="validate" />
+                        <input id="tipo" name="autor" type="hidden" class="validate" />
+                        <label for="msg">Mensagem</label>
+                        <input id="medicoCodigoMsg" readonly="readonly" type="hidden" class="validate" th:field="*{codigo}" />
+                        <span id="pacienteCodigo" style="display: none;" th:text="${session.paciente.codigo}"></span>
+                        <span id="consultaCodigo" th:text="${consulta}"></span>
+                    </div>
+                    <div class="col s4"><button id="novaMensagem" type="button" class="btn btn-large blue">Enviar</button><a th:if="${nivelAcesso == 2}" type="normal" class="btn btn-large deep-purple modal-trigger" href="#upload"><i class="material-icons">attach_file</i></a> </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<javascript th:replace="user-modelo :: javascripts"></javascript>
+<script>
+    $(document).ready(function(){
+        $('.tooltipped').tooltip({delay: 50});
+        $('.modal').modal();
+        $('select').material_select();
+        $('#chat').animate({scrollTop: $('#chat')[0].scrollHeight}, 2000);
+
+        $("#novaMensagem").click(function() {
+            var medico = $("#medicoCodigoMsg").val();
+            var paciente = $("#pacienteCodigo").text();
+            var mensagem = $("#msg").val();
+            var consulta = $("#consultaCodigo").text();
+            $.post(
+                "/Atendimento/Chat",
+                { medico: medico, mensagem: mensagem, paciente: paciente, consulta: consulta },
+                function(data) {
+                    if(data.ok){
+                        location.reload();
+                    }else{
+                        Materialize.toast(data.msg, 4000);
+
+                    }
+
+                }
+            );
+        });
+
+
+    });
+</script>
+</body>
+</html>

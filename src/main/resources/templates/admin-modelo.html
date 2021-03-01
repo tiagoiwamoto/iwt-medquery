@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:fragment="header">
+    <meta charset="UTF-8" />
+    <title>MedQuery-Baratin Baratin</title>
+    <link rel="shortcut icon" type="image/png" href="/images/iconCallNow.png"/>
+    <link rel="stylesheet" href="/webjars/materializecss/0.100.2/css/materialize.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+        .carousel .carousel-item {
+            width:400px !important;
+        }
+        .w-75{
+            width: 75%;
+        }
+
+        .paddingTop{
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<nav th:fragment="navbar">
+    <div class="nav-wrapper purple" th:switch="${session.estaLogado}">
+        <a href="#" class="brand-logo center">MedQuery</a>
+        <ul th:case="'NAO'" class="right hide-on-med-and-down">
+            <li><a href="#entrar" class="modal-trigger">ENTRAR</a></li>
+            <li><a href="#novoCadastro" class="modal-trigger">CADASTRE-SE</a></li>
+        </ul>
+        <ul th:case="'SIM'" class="right hide-on-med-and-down">
+            <li><a href="/Admin" class="modal-trigger">MEU PAINEL</a></li>
+        </ul>
+        <ul class="side-nav" id="mobile-demo">
+            <li><a href="sass.html">Sass</a></li>
+            <li><a href="badges.html">Components</a></li>
+            <li><a href="collapsible.html">Javascript</a></li>
+            <li><a href="mobile.html">Mobile</a></li>
+        </ul>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+
+<div class="col s3" th:fragment="admin-menu">
+    <div class="card-panel center" style="height: 100%;">
+        <a href="/Admin/Painel" class="btn btn-large purple darken-1 w-75 waves-effect">Home</a><br /><br />
+        <a th:if="${session.medico.nivelAcesso == 2}" href="/Especializacao" class="btn btn-large green darken-1 w-75 waves-effect">Especialização</a><br /><br />
+        <a th:if="${session.medico.nivelAcesso == 2}" href="/Exame/Lista" class="btn btn-large indigo w-75 waves-effect">Exame</a><br /><br />
+        <a href="/Atendimento/Medico" class="btn btn-large deep-orange w-75 waves-effect">Atendimento</a><br /><br />
+        <a href="/Agenda/Medico" class="btn btn-large teal darken-3 w-75 waves-effect">Agenda Consultas</a><br /><br />
+        <a th:if="${session.medico.nivelAcesso == 2}" href="/Exame/Gerenciar" class="btn btn-large indigo darken-4 w-75 waves-effect">Agenda Exames</a><br /><br />
+        <a th:if="${session.medico.nivelAcesso == 2}" href="/Medico" class="btn btn-large blue darken-1 w-75 waves-effect">Médicos</a><br /><br />
+        <a th:if="${session.medico.nivelAcesso == 2}" href="/Disponibilidade" class="btn btn-large orange darken-1 w-75 waves-effect">Disponibilidade</a><br /><br />
+        <a href="/Sair" class="btn btn-large red darken-1 w-75 waves-effect">Sair</a>
+    </div>
+</div>
+
+
+
+
+<javascript th:fragment="javascripts">
+    <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/webjars/materializecss/0.100.2/js/materialize.min.js"></script>
+    <script src="/webjars/jquery-maskedinput/1.4.0/jquery.maskedinput.min.js"></script>
+</javascript>
+</body>
+</html>

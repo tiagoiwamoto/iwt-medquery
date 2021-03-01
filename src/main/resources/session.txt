@@ -1,0 +1,12 @@
+estaLogado
+visitante
+origem
+session
+
+medico
+horaConsulta
+diaConsulta
+
+exame
+horaExame
+diaExame

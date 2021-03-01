@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="admin-modelo :: header">
+</head>
+<body>
+<nav th:replace="admin-modelo :: navbar"></nav>
+<div class="row paddingTop">
+    <div class="col s3" th:replace="admin-modelo :: admin-menu"> </div>
+
+    <div class="col s9">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!">Atendimento</a>
+                </div>
+            </div>
+        </nav>
+        <br />
+
+        <ul class="collection">
+            <li class="collection-item avatar" th:each="atendimento: ${exames}">
+                <i class="material-icons circle red">airline_seat_flat_angled</i>
+                <p th:text="${atendimento.descricao}"></p>
+                <a th:href="@{/Atendimento/{codigo}(codigo=${atendimento.codigo})}" class="btn yellow darken-1 waves-effect waves-light black-text">Realizar atendimento</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<javascript th:replace="admin-modelo :: javascripts"></javascript>
+</body>
+</html>

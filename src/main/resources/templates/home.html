@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="modelo :: header"></head>
+<body>
+<nav th:replace="modelo :: navbar"></nav>
+<div class="section white">
+    <div class="row container">
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s6"><a class="active" href="#consultas">Busca de consultas</a></li>
+                    <li class="tab col s6"><a href="#exames">Solicitação de exames</a></li>
+                </ul>
+            </div>
+            <div id="consultas" class="col s12">
+                <h2 class="header">Busca de consultas</h2>
+                <form action="/Busca" method="post" enctype="multipart/form-data">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">search</i>
+                        <input id="busca" name="especializacao" type="text" class="validate" />
+                        <label for="busca">O que ta doendo ?</label>
+                    </div>
+                </form>
+            </div>
+            <div id="exames" class="col s12">
+                <h2 class="header">Solicitação de exames</h2>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div class="input-field col s4">
+                        <select id="exame">
+                            <option th:each="exame: ${exames}" th:value="${exame.codigo}" th:text="${exame.nome}"></option>
+                        </select>
+                        <label>Vamos furar o braço ? Uma fotinha do esqueleto ? ou outro exame ?</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input id="selecionarDia" placeholder="Dia" type="text" class="datepicker" />
+                    </div>
+                    <div class="input-field col s3">
+                        <input id="hora" type="text" class="timepicker" placeholder="Hora" />
+                    </div>
+                    <div class="col s2">
+                        <a href="#" id="agendarExame" class="btn btn-large blue">Agendar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <p class="grey-text text-darken-3 lighten-3">Solicite exames, revisões de exames, agende consultas. Tudo baratin baratin</p>
+    </div>
+</div>
+<div class="section orange lighten-1">
+    <div class="row container">
+        <div class="slider">
+            <ul class="slides">
+                <li>
+                    <img src="/images/slideBack1.jpg" /> <!-- random image -->
+                    <div class="caption center-align">
+                        <h3>MedQuery</h3>
+                        <h5 class="light grey-text text-lighten-3">Um jeito novo pra vc ficar novo!</h5>
+                    </div>
+                </li>
+                <li>
+                    <img src="/images/slideBack2.png" /> <!-- random image -->
+                    <div class="caption left-align black-text">
+                        <h3>Consultas</h3>
+                        <h5 class="light black-text text-lighten-3">Consultas baratinhas, rápidas e puts grilo isso é demais.</h5>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="parallax-container">
+    <div class="parallax"><img src="/images/fundo1.jpg" /></div>
+</div>
+<div class="section blue">
+    <div class="row container">
+        <h5 class="header">Equipe mega hiper dedicada a você que ta todo precisando de ajuda ;)</h5>
+        <div class="carousel center">
+            <a class="carousel-item" href="#one!"><img src="/images/slide1.jpg" /></a>
+            <a class="carousel-item" href="#two!"><img src="/images/slide2.jpg" /></a>
+            <a class="carousel-item" href="#three!"><img src="/images/slide3.jpg" /></a>
+            <a class="carousel-item" href="#four!"><img src="/images/slide4.jpg" /></a>
+            <a class="carousel-item" href="#five!"><img src="/images/slide5.jpg" /></a>
+            <a class="carousel-item" href="#six!"><img src="/images/slide6.jpg" /></a>
+        </div>
+    </div>
+</div>
+<div class="parallax-container">
+    <div class="parallax"><img src="/images/fundo2.jpg" /></div>
+</div>
+<div class="section green">
+    <div class="row container">
+        <h2 class="header">Quem somos</h2>
+        <div class="center">
+            <video width="720" height="480" controls="controls">
+                <source src="/images/team.mp4" type="video/mp4" />
+                OMG, seu navegador não funfa videos em HTML5.
+            </video>
+        </div>
+
+    </div>
+</div>
+<div class="parallax-container">
+    <div class="parallax"><img src="/images/fundo3.jpg" /></div>
+</div>
+<div class="section orange">
+    <div class="row container">
+        <h2 class="header">Onde estamos ?</h2>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d162988.97401381785!2d-49.38887223132982!3d-25.48564539749075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94dce3f5fc090ff1%3A0x3c7a83b0092bb747!2sCuritiba+-+PR!5e0!3m2!1spt-BR!2sbr!4v1523325429431" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen="allowfullscreen"></iframe>
+    </div>
+</div>
+<footer class="page-footer blue darken-4" th:replace="modelo :: footer"></footer>
+
+<!-- Modal Cadastro -->
+<div id="novoCadastro" class="modal" style="width: 400px;">
+    <div class="modal-content">
+        <h4 class="center">Novo cadastro</h4>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="nomeCompleto" type="text" class="validate" />
+                <label for="nomeCompleto">Nome completo</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="cpf" type="text" class="validate" />
+                <label for="cpf">CPF</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="email" type="email" class="validate" />
+                <label for="email">Email</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="telefone" type="text" class="validate" />
+                <label for="telefone">Telefone</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="senha" type="password" class="validate" />
+                <label for="senha">Senha</label>
+            </div>
+            <div class="center"><button id="salvar" class="btn btn-large blue waves-effect">Cadastrar</button></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Login -->
+<div id="entrar" class="modal" style="width: 400px;">
+    <div class="modal-content">
+        <h4 class="center">Entrar</h4>
+
+        <div class="row">
+            <form action="/Paciente/Entrar" method="post" enctype="multipart/form-data" class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="usuario" name="usr" type="email" class="validate" />
+                        <label for="usuario">Email</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="entrarSenha" name="pwd" type="password" class="validate" />
+                        <label for="entrarSenha">Senha</label>
+                    </div>
+                    <div class="center"><button type="submit" id="loginBtn" class="btn btn-large blue waves-effect">Entrar</button></div>
+                </div>
+                <div class="col s12">
+                    <a href="#">Xiii esqueci a senha ?</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<javascript th:replace="modelo :: javascripts"></javascript>
+<script>
+    $(document).ready(function(){
+        $('select').material_select();
+        $('.parallax').parallax();
+        $('.carousel').carousel();
+        $('ul.tabs').tabs();
+        $('.slider').slider();
+        $(".button-collapse").sideNav();
+        $('.modal').modal();
+
+        $("#cpf").mask("999.999.999-99");
+
+        jQuery("#telefone")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if(phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
+
+        $('.timepicker').pickatime({
+            default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+            fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+            twelvehour: false, // Use AM/PM or 24-hour format
+            donetext: 'OK', // text for done-button
+            cleartext: 'Clear', // text for clear-button
+            canceltext: 'Cancel', // Text for cancel-button,
+            container: undefined, // ex. 'body' will append picker to body
+            autoclose: false, // automatic close timepicker
+            ampmclickable: true, // make AM PM clickable
+            aftershow: function(){} //Function for after opening timepicker
+        });
+
+        $('#selecionarDia').pickadate({
+            labelMonthNext: 'Próximo Mês',
+            labelMonthPrev: 'Mês Anterior',
+            // Título dos seletores de mês e ano
+            labelMonthSelect: 'Selecione o Mês',
+            labelYearSelect: 'Selecione o Ano',
+            // Meses e dias da semana
+            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            weekdaysFull: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            // Letras da semana
+            weekdaysLetter: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+            //Botões
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Pronto',
+            // Formato da data que aparece no input
+            format: 'yyyy/mm/dd',
+
+            disable: [
+                { from: [0,0,0], to: new Date((new Date()).valueOf()-1000*60*60*24) }
+            ],
+            onClose: function() {
+                $(document.activeElement).blur()
+            },
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 0, // Creates a dropdown of 15 years to control year,
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Ok',
+            closeOnSelect: true // Close upon selecting a date,
+
+        });
+
+        $("#agendarExame").click(function() {
+            var exame = $("#exame").val();
+            var data = $("#selecionarDia").val();
+            var hora = $("#hora").val();
+            var horaSelecionada = hora.substr(0, 2);
+            console.log(horaSelecionada);
+
+            if(data.length === 0){
+                Materialize.toast('Selecione o dia do exame poxa !', 10000);
+                return;
+            }
+
+            if(hora.length === 0){
+                Materialize.toast('Esqueceu a hora né ?', 10000);
+                return;
+            }
+
+            if(08 > horaSelecionada){
+                Materialize.toast('Nesses horarios acho que não rola né ?', 10000);
+                return;
+            }
+
+            if(horaSelecionada > 20){
+                Materialize.toast('Nesses horarios acho que não rola né ?', 10000);
+                return;
+            }
+
+            $.post(
+                "/Exame/Agendar",
+                { exame: exame, dataHora: data + " " + hora},
+                function(data) {
+                    if(data.ok){
+                        Materialize.toast(data.msg, 10000);
+                    }else{
+                        Materialize.toast(data.msg, 10000);
+                    }
+                }
+            );
+        });
+
+        $("#salvar").click(function() {
+
+            var cpf = $("#cpf").val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+            var nome = $("#nomeCompleto").val();
+            var email = $("#email").val();
+            var telefone = $("#telefone").val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+            var senha = $("#senha").val();
+
+            $.post(
+                "/Paciente/Gravar",
+                { cpf: cpf, nome: nome, telefone: telefone, email: email, senha: senha },
+                function(data) {
+                    if(data.ok){
+                        Materialize.toast(data.msg, 10000);
+                        $('input').val('');
+                        $('#novoCadastro').modal('close');
+                    }else{
+                        Materialize.toast(data.msg, 10000);
+                    }
+                }
+            );
+        });
+    });
+</script>
+</body>
+</html>

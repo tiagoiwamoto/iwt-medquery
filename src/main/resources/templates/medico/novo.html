@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="admin-modelo :: header">
+</head>
+<body>
+<nav th:replace="admin-modelo :: navbar"></nav>
+<div class="row paddingTop">
+<div class="col s3" th:replace="admin-modelo :: admin-menu"> </div>
+
+<div class="col s9">
+    <nav>
+        <div class="nav-wrapper">
+            <div class="col s12">
+                <a href="#!">Médicos</a>
+            </div>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="crm" type="text" class="validate" />
+                <label for="crm">CRM</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="cpf" type="text" class="validate" />
+                <label for="cpf">CPF</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="rg" type="text" class="validate" />
+                <label for="rg">RG</label>
+            </div>
+            <div class="input-field col s6">
+                <select id="sexo">
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>
+                </select>
+                <label>Sexo</label>
+            </div>
+            <div class="input-field col s12" th:object="${medico}">
+                <select id="especializacao" th:field="*{especializacao.codigo}">
+                    <option th:each="especializacao: ${especializacao}" th:value="${especializacao.codigo}" th:text="${especializacao.nome}"></option>
+                </select>
+                <label>Especialização</label>
+            </div>
+
+            <div class="input-field col s6">
+                <input id="nome" type="text" class="validate" />
+                <label for="nome">Nome Completo</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="dataNascimento" type="text" class="datepicker" />
+                <label for="dataNascimento">Data de nascimento</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="email" type="email" class="validate" />
+                <label for="email">Email</label>
+            </div>
+            <div class="input-field col s4">
+                <input id="telefoneResidencial" type="text" class="validate" />
+                <label for="telefoneResidencial">Telefone residencial</label>
+            </div>
+            <div class="input-field col s4">
+                <input id="telefoneCelular" type="text" class="validate" />
+                <label for="telefoneCelular">Telefone celular</label>
+            </div>
+            <div class="input-field col s4">
+                <input id="telefoneRecado" type="text" class="validate" />
+                <label for="telefoneRecado">Telefone recado</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="nomeMae" type="text" class="validate" />
+                <label for="nomeMae">Nome da mãe</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="nomePai" type="text" class="validate" />
+                <label for="nomePai">Nome do pai</label>
+            </div>
+
+            <div class="input-field col s4">
+                <input id="usuario" type="text" class="validate" />
+                <label for="usuario">Nome de usuário</label>
+            </div>
+            <div class="input-field col s4">
+                <input id="senha" type="text" class="validate" />
+                <label for="senha">Senha</label>
+            </div>
+            <div class="input-field col s4">
+                <select id="nivel">
+                    <option value="0">Médico</option>
+                    <option value="1">Secretária</option>
+                    <option value="2">Administrador</option>
+                </select>
+                <label>Nivel</label>
+            </div>
+
+
+
+            <div><button id="salvar" class="btn btn-large green lighten-1">Gravar</button> </div>
+
+        </div>
+    </div>
+
+</div>
+</div>
+<javascript th:replace="admin-modelo :: javascripts"></javascript>
+<script>
+    $(document).ready(function(){
+
+        $("#salvar").click(function() {
+
+            var crm = $("#crm").val();
+            var cpf = $("#cpf").val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+            var rg = $("#rg").val();
+            var sexo = $("#sexo").val();
+            var especializacao = $("#especializacao").val();
+            var nome = $("#nome").val();
+            var email = $("#email").val();
+            var dataNascimento = $("#dataNascimento").val();
+            var telefoneResidencial = $("#telefoneResidencial").val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+            var telefoneCelular = $("#telefoneCelular").val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+            var telefoneRecado = $("#telefoneRecado").val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+            var nomeMae = $("#nomeMae").val();
+            var nomePai = $("#nomePai").val();
+            var usuario = $("#usuario").val();
+            var senha = $("#senha").val();
+            var nivel = $("#nivel").val();
+
+            $.post(
+                "/Medico/Novo",
+                { crm: crm, cpf: cpf, rg: rg, sexo: sexo, especializacao: especializacao, nomeCompleto: nome, dataNascimento: dataNascimento,
+                    telefoneResidencial: telefoneResidencial, telefoneCelular: telefoneCelular, email: email, telefoneRecado: telefoneRecado,
+                    nomeMae: nomeMae, nomePai: nomePai, usr: usuario, pwd: senha, nivelAcesso: nivel },
+                function(data) {
+                    if(data.ok){
+                        Materialize.toast(data.msg, 10000);
+                        Materialize.toast("Voltar para lista de médicos? " + '<a href="/Medico/" class='btn blue'>Sim</a>', 10000);
+                    }else{
+                        Materialize.toast(data.msg, 10000);
+                    }
+                }
+            );
+        });
+
+        $(".button-collapse").sideNav();
+        $('select').material_select();
+        $('.datepicker').pickadate({
+            selectMonths: true,
+            selectYears: 100,
+            // Título dos botões de navegação
+            labelMonthNext: 'Próximo Mês',
+            labelMonthPrev: 'Mês Anterior',
+            // Título dos seletores de mês e ano
+            labelMonthSelect: 'Selecione o Mês',
+            labelYearSelect: 'Selecione o Ano',
+            // Meses e dias da semana
+            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            weekdaysFull: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            // Letras da semana
+            weekdaysLetter: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+            //Botões
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Pronto',
+            autoClose: true,
+            keepOpen: false,
+            // Formato da data que aparece no input
+            format: 'yyyy-mm-dd',
+            onClose: function() {
+                $(document.activeElement).blur()
+            }
+        });
+        $("#cpf").mask("999.999.999-99");
+        $("#telefoneResidencial").mask("(99)9999-9999");
+        $("#telefoneCelular").mask("(99) 99999-9999");
+        $("#telefoneRecado").mask("(99) 99999-9999");
+
+    });
+</script>
+</body>
+</html>

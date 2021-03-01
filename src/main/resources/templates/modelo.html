@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:fragment="header">
+    <meta charset="UTF-8" />
+    <title>MedQuery-Baratin Baratin</title>
+    <link rel="shortcut icon" type="image/png" href="/images/iconCallNow.png"/>
+    <link rel="stylesheet" href="/webjars/materializecss/0.100.2/css/materialize.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="/webjars/font-awesome/5.0.13/web-fonts-with-css/css/fontawesome-all.min.css" />
+    <style>
+        .carousel .carousel-item {
+            width:400px !important;
+        }
+    </style>
+</head>
+<body>
+<nav th:fragment="navbar">
+    <div class="nav-wrapper purple" th:switch="${session.estaLogado}">
+        <a href="#" class="brand-logo center">MedQuery</a>
+        <ul th:case="'NAO'" class="right hide-on-med-and-down">
+            <li><a href="#entrar" class="modal-trigger">ENTRAR</a></li>
+            <li><a href="#novoCadastro" class="modal-trigger">CADASTRE-SE</a></li>
+        </ul>
+        <ul th:case="'SIM'" class="right hide-on-med-and-down">
+            <li><a href="/User" class="modal-trigger">MEU PAINEL</a></li>
+        </ul>
+        <ul class="side-nav" id="mobile-demo">
+            <li><a href="sass.html">Sass</a></li>
+            <li><a href="badges.html">Components</a></li>
+            <li><a href="collapsible.html">Javascript</a></li>
+            <li><a href="mobile.html">Mobile</a></li>
+        </ul>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+
+<footer class="page-footer blue darken-4" th:fragment="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">MedQuery</h5>
+                <p class="grey-text text-lighten-4">Somos um pessoal novo cuidando dos podrões desse nosso Brazilzão</p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                    <li><a class="grey-text text-lighten-3" href="#!">Baladas</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Bares</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Cinema</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Paquera</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            © 2018 Todos os direitos bons estão reservados
+            <a class="grey-text text-lighten-4 right" href="#!"><i class="fab fa-facebook-square fa-2x"></i></a>
+            <a class="grey-text text-lighten-4 right" href="#!"><i class="fab fa-instagram fa-2x"></i></a>
+            <a class="grey-text text-lighten-4 right" href="#!"><i class="fab fa-twitter-square fa-2x"></i></a>  
+            <a class="grey-text text-lighten-4 right" href="#!"><i class="fab fa-linkedin fa-2x"></i></a>
+        </div>
+    </div>
+</footer>
+
+
+<javascript th:fragment="javascripts">
+    <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/webjars/materializecss/0.100.2/js/materialize.min.js"></script>
+    <script src="/webjars/jquery-maskedinput/1.4.0/jquery.maskedinput.min.js"></script>
+</javascript>
+</body>
+</html>

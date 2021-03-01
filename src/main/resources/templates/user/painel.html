@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="user-modelo :: header"></head>
+<body>
+<nav th:replace="user-modelo :: navbar"></nav>
+<div class="row paddingTop">
+    <div class="col s3" th:replace="user-modelo :: user-menu"> </div>
+
+    <div class="col s9">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!">Controle do usuário</a>
+                </div>
+            </div>
+        </nav>
+            <div class="col s2">
+                <div class="card-panel center">
+                    <span>Total de consultas</span>
+                    <h3 th:text="${totalConsultas}"></h3>
+                </div>
+            </div>
+
+            <div class="col s2">
+                <div class="card-panel center">
+                    <span>Total de exames</span>
+                    <h3 th:text="${totalExames}"></h3>
+                </div>
+            </div>
+
+            <div class="col s4">
+                <div class="card-panel center">
+                    <span>Última consulta realizada</span>
+                    <h3 th:text="${ultimaConsulta.diaConsulta + ' ' + ultimaConsulta.horaConsulta}"></h3>
+                </div>
+            </div>
+
+            <div class="col s4">
+                <div class="card-panel center">
+                    <span>Total de mensagens enviadas</span>
+                    <h3 th:text="${totalMensagens}"></h3>
+                </div>
+            </div>
+        <div class="col s12" style="overflow-y: scroll; min-height: 400px; max-height: 400px;">
+            <ul class="collection">
+                <li>Últimas noticias da saúde</li>
+                <li class="collection-item avatar" th:each="noticia: ${noticias}">
+                    <div class="col s1"><i class="far fa-newspaper fa-4x"></i></div>
+                    <div class="col s11">
+                        <a th:href="${noticia.link}" target="_blank"><p th:text="${noticia.title}"></p></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+
+</div>
+<javascript th:replace="user-modelo :: javascripts"></javascript>
+</body>
+</html>

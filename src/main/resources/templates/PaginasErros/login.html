@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="modelo :: header"></head>
+<style>
+    .login-backgroud{
+        /* The image used */
+        background: url("../images/loginBack.jpg") no-repeat center center fixed;
+
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>
+<body class="login-backgroud">
+
+<div class="container" style="padding-top: 100px;">
+    <div class="row">
+        <div class="col s6">
+            <div class="card" style="width: 450px; opacity: 0.8;">
+                <div class="card-content">
+                    <div class="center"><img src="../images/logo.png" /></div>
+                    <form action="/Paciente/Entrar" method="post" enctype="multipart/form-data" class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="usuario" name="usr" type="email" class="validate" />
+                                <label for="usuario">Email</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input id="entrarSenha" name="pwd" type="password" class="validate" />
+                                <label for="entrarSenha">Senha</label>
+                            </div>
+                            <div class="center"><button type="submit" id="loginBtn" class="btn btn-large blue waves-effect">Entrar</button></div>
+                            <div class="col s12"><a href="#">Xiii esqueci a senha ?</a></div>
+                        </div>
+                    </form>
+                    <span class="card-title activator grey-text text-darken-4">Não tem cadastro ?<i class="material-icons right">info</i></span>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i>Cadastro</span>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="nomeCompleto" type="text" class="validate" />
+                            <label for="nomeCompleto">Nome completo</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="cpf" type="text" class="validate" />
+                            <label for="cpf">CPF</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="email" type="email" class="validate" />
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="telefone" type="text" class="validate" />
+                            <label for="telefone">Telefone</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="senha" type="password" class="validate" />
+                            <label for="senha">Senha</label>
+                        </div>
+                        <div class="center"><button id="salvar" class="btn btn-large blue waves-effect">Cadastrar</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s6">
+            <div class="card-panel red lighten-1" style="opacity: 0.8;" id="aviso">
+                <a href="#"><span class="card-title white-text text-darken-4" onclick="fecharAviso()"><i class="material-icons right">close</i></span></a>
+          <span class="white-text" th:text="${msg}"></span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<javascript th:replace="modelo :: javascripts"></javascript>
+<script>
+    function fecharAviso() {
+        $('#aviso').fadeOut("slow");
+    }
+
+    $(document).ready(function(){
+        $("#cpf").mask("999.999.999-99");
+
+        jQuery("#telefone")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if(phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
+
+        $("#salvar").click(function() {
+
+            var cpf = $("#cpf").val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+            var nome = $("#nomeCompleto").val();
+            var email = $("#email").val();
+            var telefone = $("#telefone").val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+            var senha = $("#senha").val();
+
+            $.post(
+                "/Paciente/Gravar",
+                { cpf: cpf, nome: nome, telefone: telefone, email: email, senha: senha },
+                function(data) {
+                    if(data.ok){
+                        Materialize.toast(data.msg, 10000);
+                        $('input').val('');
+                        $('#novoCadastro').modal('close');
+                    }else{
+                        Materialize.toast(data.msg, 10000);
+                    }
+                }
+            );
+        });
+    });
+</script>
+</body>
+</html>

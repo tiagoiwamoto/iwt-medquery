@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="admin-modelo :: header">
+</head>
+<body>
+<div th:if="${msgAgenda != null}">
+    <script>
+        Materialize.toast('<span th:text="${msgAgenda}"></span>', 5000);
+    </script>
+</div>
+<nav th:replace="admin-modelo :: navbar"></nav>
+<div class="row paddingTop">
+    <div class="col s3" th:replace="admin-modelo :: admin-menu"> </div>
+
+    <div class="col s9">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!">Agenda</a>
+                </div>
+            </div>
+        </nav>
+        <br />
+        <a href="/" class="btn btn-large blue lighten-1 waves-effect waves-light">Nova</a>
+            <table class="highlight">
+                <thead>
+                <tr>
+                    <th>Exame</th>
+                    <th>Data do exame</th>
+                    <th>Paciente</th>
+                    <th class="center">Confirmado</th>
+                    <th class="center">Cancelado</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="exame: ${exames}">
+                    <td th:text="${exame.exame.nome}"></td>
+                    <td th:text="${exame.dataHora}"></td>
+                    <td th:text="${exame.paciente.nome}"></td>
+                    <td class="center">
+                        <a id="confirmar" href="#" th:if="${exame.status == 0}" th:onclick="'confirmar(\'/Exame/Confirmar/' + ${exame.codigo} + '\');'" class="btn green lighten-1 waves-effect waves-light">Confirmar</a>
+                        <i id="confirmado" th:if="${exame.status == 1}" class="material-icons blue-text">check</i>
+                    </td>
+                    <td class="center">
+                        <a id="cancelar" href="#" th:if="${exame.status == 0}" th:onclick="'cancelar(\'/Exame/Cancelar/' + ${exame.codigo} + '\');'" class="btn yellow darken-1 waves-effect waves-light">Cancelar</a>
+                        <i id="cancelado" th:if="${exame.status == 2}" class="material-icons red-text">check</i>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+    </div>
+</div>
+<javascript th:replace="admin-modelo :: javascripts"></javascript>
+<script>
+
+    function confirmar(url) {
+        Materialize.toast('Confirma agendamento ? <a href="' + url + '" class='btn blue'>Sim</a>', 10000);
+    }
+
+    function cancelar(url) {
+        Materialize.toast('Confirma cancelamento ? <a href="' + url + '" class='btn blue'>Sim</a>', 10000);
+    }
+</script>
+</body>
+</html>

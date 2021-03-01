@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="admin-modelo :: header">
+</head>
+<body>
+<nav th:replace="admin-modelo :: navbar"></nav>
+<div class="row paddingTop">
+<div class="col s3" th:replace="admin-modelo :: admin-menu"> </div>
+
+<div class="col s9">
+    <nav>
+        <div class="nav-wrapper">
+            <div class="col s12">
+                <a href="#!">Exame</a>
+            </div>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="nome" type="text" class="validate" />
+                <label for="nome">Nome</label>
+            </div>
+        </div>
+        <div class="center"><button id="salvar" class="btn btn-large green lighten-1">Gravar</button> </div>
+    </div>
+
+
+</div>
+</div>
+<javascript th:replace="admin-modelo :: javascripts"></javascript>
+<script>
+    $(document).ready(function(){
+
+        $("#salvar").click(function() {
+            var nome = $("#nome").val();
+
+            $.post(
+                "/Exame",
+                { nome: nome },
+                function(data) {
+                    if(data.ok){
+                        Materialize.toast(data.msg, 4000);
+                        Materialize.toast("Voltar para lista de exames? " + '<a href="/Exame/Lista" class='btn blue'>Sim</a>', 10000);
+                        $("input").val("");
+                    }else{
+                        Materialize.toast(data.msg, 4000);
+
+                    }
+
+                }
+            );
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="admin-modelo :: header">
+</head>
+<body>
+<nav th:replace="admin-modelo :: navbar"></nav>
+<div class="row paddingTop">
+    <div class="col s3" th:replace="admin-modelo :: admin-menu"> </div>
+
+    <div class="col s9">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!">Especialistas</a>
+                </div>
+            </div>
+        </nav>
+        <br />
+        <a href="/Especializacao/Nova" class="btn btn-large blue lighten-1 waves-effect waves-light">Nova especialização</a>
+
+        <ul class="collection">
+            <li class="collection-item avatar" th:each="especializacao: ${items}">
+                <i class="material-icons circle red">airline_seat_flat_angled</i>
+                <span class="title" th:text="${especializacao.nome}"></span>
+                <p th:text="${especializacao.descricao}"></p>
+                <a th:href="@{/Especializacao/Editar/{codigo}(codigo=${especializacao.codigo})}" class="btn yellow darken-1 waves-effect waves-light black-text">Editar</a>
+                <a href="#" th:onclick="'deletar(\'/Especializacao/Remover/' + ${especializacao.codigo} + '\');'" class="btn red lighten-1 waves-effect waves-light">Remover</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<javascript th:replace="admin-modelo :: javascripts"></javascript>
+<script>
+    function deletar(url) {
+        Materialize.toast('Confirmar remoção ? <a href="' + url + '" class='btn blue'>Sim</a>', 10000);
+    }
+    $(document).ready(function(){
+
+
+    });
+</script>
+</body>
+</html>

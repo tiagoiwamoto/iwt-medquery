@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="user-modelo :: header"></head>
+<body>
+<nav th:replace="user-modelo :: navbar"></nav>
+<div class="row paddingTop">
+    <div class="col s3" th:replace="user-modelo :: user-menu"> </div>
+
+    <div class="col s9">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!">Configurações</a>
+                </div>
+            </div>
+        </nav>
+        <br />
+        <div th:object="${paciente}">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="nomeCompleto" th:field="*{nome}" type="text" class="validate" />
+                    <label for="nomeCompleto">Nome</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input id="dataNascimento" th:field="*{dataNascimento}" type="text" class="validate" />
+                    <label for="dataNascimento">Data nascimento</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input id="cpf" th:field="*{cpf}" type="text" class="validate" />
+                    <label for="cpf">CPF</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input id="sexo" th:field="*{sexo}" type="text" class="validate" />
+                    <label for="sexo">Sexo</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input id="cep" th:field="*{cep}" type="text" class="validate" />
+                    <label for="cep">CEP</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input id="logradouro" th:field="*{logradouro}" type="text" class="validate" />
+                    <label for="logradouro">Logradouro</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input id="numero" th:field="*{numero}" type="text" class="validate" />
+                    <label for="numero">Numero</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input id="bairro" th:field="*{bairro}" type="text" class="validate" />
+                    <label for="bairro">Bairro</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input id="cidade" type="text" th:field="*{cidade}" class="validate" />
+                    <label for="cidade">Cidade</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input id="telefone" type="text" th:field="*{telefone}" class="validate" />
+                    <label for="telefone">Telefone</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input id="email" type="text" th:field="*{email}" class="validate" />
+                    <label for="email">Email</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <a href="#changePassword" class="btn btn-large orange modal-trigger">Alterar senha</a>
+                </div>
+            </div>
+            <div class="center"><button id="salvar" class="btn btn-large blue waves-effect">Cadastrar</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal update senha -->
+<div id="changePassword" class="modal" style="width: 400px;">
+    <div class="modal-content">
+        <h4 class="center">Atualizar senha</h4>
+
+        <div class="row">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="senhaAtual" name="usr" type="password" class="validate" />
+                        <label for="senhaAtual">Senha atual</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="novaSenha" name="pwd" type="password" class="validate" />
+                        <label for="novaSenha">Nova senha</label>
+                    </div>
+                    <div class="center"><button id="updatePassword" class="btn btn-large blue waves-effect">Atualizar</button></div>
+                </div>
+        </div>
+    </div>
+</div>
+<javascript th:replace="user-modelo :: javascripts"></javascript>
+<script>
+    $(document).ready(function(){
+        $('.modal').modal();
+        $("#cpf").mask("999.999.999-99");
+
+        jQuery("#telefone")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if(phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
+
+        $("#updatePassword").click(function() {
+
+            var oldPassword = $("#senhaAtual").val();
+            var newPassword = $("#novaSenha").val();
+
+
+            $.post(
+                "/User/Password",
+                { oldPassword: oldPassword, newPassword: newPassword},
+                function(data) {
+                    if(data.ok){
+                        Materialize.toast(data.msg, 10000);
+                        $("#senhaAtual").val("");
+                        $("#novaSenha").val("");
+                        $('#changePassword').modal('close');
+                    }else{
+                        Materialize.toast(data.msg, 10000);
+                    }
+                }
+            );
+        });
+
+        $("#salvar").click(function() {
+
+            var cpf = $("#cpf").val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+            var nome = $("#nomeCompleto").val();
+            var email = $("#email").val();
+            var telefone = $("#telefone").val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+            var logradouro = $("#logradouro").val();
+            var numero = $("#numero").val();
+            var cep = $("#cep").val();
+            var bairro = $("#bairro").val();
+            var cidade = $("#cidade").val();
+            var sexo = $("#sexo").val();
+            var dataNascimento = $("#dataNascimento").val();
+
+            $.post(
+                "/User/Update",
+                { cpf: cpf, nome: nome, telefone: telefone, email: email, logradouro: logradouro, numero: numero, cep: cep, bairro: bairro, cidade: cidade, sexo: sexo, dataNascimento: dataNascimento },
+                function(data) {
+                    if(data.ok){
+                        Materialize.toast(data.msg, 10000);
+                    }else{
+                        Materialize.toast(data.msg, 10000);
+                    }
+                }
+            );
+        });
+    });
+</script>
+</body>
+</html>

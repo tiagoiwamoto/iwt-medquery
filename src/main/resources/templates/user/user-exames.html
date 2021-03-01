@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="user-modelo :: header">
+</head>
+<body>
+<nav th:replace="user-modelo :: navbar"></nav>
+<div class="row paddingTop">
+    <div class="col s3" th:replace="user-modelo :: user-menu"> </div>
+
+    <div class="col s9">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!">Agenda</a>
+                </div>
+            </div>
+        </nav>
+        <br />
+        <a href="/" class="btn btn-large blue lighten-1 waves-effect waves-light">Nova</a>
+            <table class="highlight">
+                <thead>
+                <tr>
+                    <th>Exame</th>
+                    <th>Data do exame</th>
+                    <th>Paciente</th>
+                    <th class="center">Confirmado</th>
+                    <th class="center">Cancelado</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="exame: ${exames}">
+                    <td th:text="${exame.exame.nome}"></td>
+                    <td th:text="${exame.dataHora}"></td>
+                    <td th:text="${exame.paciente.nome}"></td>
+                    <td class="center">
+                        <i id="confirmado" th:if="${exame.status == 1}" class="material-icons blue-text">check</i>
+                    </td>
+                    <td class="center">
+                        <i id="cancelado" th:if="${exame.status == 2}" class="material-icons red-text">check</i>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+    </div>
+</div>
+<javascript th:replace="user-modelo :: javascripts"></javascript>
+</body>
+</html>

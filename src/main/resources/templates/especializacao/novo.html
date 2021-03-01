@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="admin-modelo :: header">
+</head>
+<body>
+<nav th:replace="admin-modelo :: navbar"></nav>
+<div class="row paddingTop">
+<div class="col s3" th:replace="admin-modelo :: admin-menu"> </div>
+
+<div class="col s9">
+    <nav>
+        <div class="nav-wrapper">
+            <div class="col s12">
+                <a href="#!">Especialistas</a>
+            </div>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="nome" type="text" class="validate" />
+                <label for="nome">Nome</label>
+            </div>
+
+            <div>
+                <label>Palavras chaves</label>
+                <div id="chips" class="col s12 chips chips-placeholder"></div>
+            </div>
+
+            <div class="input-field col s12">
+                <textarea id="descricao" class="materialize-textarea"></textarea>
+                <label for="descricao">Descrição</label>
+            </div>
+        </div>
+        <div class="center"><button id="salvar" class="btn btn-large green lighten-1">Gravar</button> </div>
+    </div>
+
+
+</div>
+</div>
+<javascript th:replace="admin-modelo :: javascripts"></javascript>
+<script>
+    $(document).ready(function(){
+
+        $("#salvar").click(function() {
+            var nome = $("#nome").val();
+            var descricao = $("#descricao").val();
+
+            var chips = $('#chips').material_chip('data');
+            console.log(chips);
+            var palavraChave = nome + ',';
+            jQuery.each( chips, function( i, val ) {
+                palavraChave += val.tag + ',';
+            });
+
+            if(nome.length === 0){
+                Materialize.toast('Nome vazio', 10000);
+                return;
+            }
+
+            $.post(
+                "/Especializacao/Nova",
+                { nome: nome, descricao: descricao, palavraChave: palavraChave },
+                function(data) {
+                    if(data.ok){
+                        Materialize.toast(data.msg, 4000);
+                        Materialize.toast("Voltar para lista de especializações? " + '<a href="/Especializacao/" class='btn blue'>Sim</a>', 10000);
+                        $("input").val("");
+                        $('#descricao').val("");
+                        $('#chips').material_chip({
+                            placeholder: 'Palavra chave',
+                            secondaryPlaceholder: '+Tag',
+                        });
+                    }else{
+                        Materialize.toast(data.msg, 4000);
+
+                    }
+
+                }
+            );
+        });
+
+
+        $('.chips-placeholder').material_chip({
+            placeholder: 'Palavra chave',
+            secondaryPlaceholder: '+Tag',
+        });
+    });
+</script>
+</body>
+</html>

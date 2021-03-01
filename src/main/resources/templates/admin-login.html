@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="modelo :: header"></head>
+<style>
+    .login-backgroud{
+        /* The image used */
+        background: url("../images/loginBack.jpg") no-repeat center center fixed;
+
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>
+<body class="login-backgroud">
+
+<div class="container" style="padding-top: 100px;">
+    <div class="row">
+        <div class="col s6">
+            <div class="card" style="width: 450px; opacity: 0.8;">
+                <div class="card-content">
+                    <div class="center"><img src="../images/logo.png" /></div>
+                    <form action="/Admin/Entrar" method="post" enctype="multipart/form-data" class="col s12" >
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="usuario" name="usr" type="text" class="validate" />
+                                <label for="usuario">Email</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input id="entrarSenha" name="pwd" type="password" class="validate" />
+                                <label for="entrarSenha">Senha</label>
+                            </div>
+                            <div class="center"><button type="submit" id="loginBtn" class="btn btn-large blue waves-effect">Entrar</button></div>
+                        </div>
+                    </form>
+                <span class="card-title activator grey-text text-darken-4"><a href="#">Xiii esqueci a senha ?</a></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s6">
+            <div class="card-panel red lighten-1" style="opacity: 0.8;" id="aviso">
+                <a href="#"><span class="card-title white-text text-darken-4" onclick="fecharAviso()"><i class="material-icons right">close</i></span></a>
+          <span class="white-text" th:text="${msg}"></span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<javascript th:replace="modelo :: javascripts"></javascript>
+<script>
+    function fecharAviso() {
+        $('#aviso').fadeOut("slow");
+    }
+</script>
+</body>
+</html>

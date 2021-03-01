@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="modelo :: header"></head>
+<body>
+<nav th:replace="modelo :: navbar"></nav>
+<div class="section white">
+    <div class="row container">
+        <p class="grey-text text-darken-3 lighten-3">Especialistas disponiveis</p>
+        <div th:each="e: ${esp}">
+            <div th:each="medico: ${e.medicos}" class="col s12 paddingTop">
+                <p  th:text="${medico.nomeCompleto}"></p>
+                <p  th:text="${e.palavraChave}"></p>
+
+                <div>
+                    <a href="#modalDia" type="button" class="btn blue waves-effect waves-light modal-trigger pulse" th:each="medicoAgenda: ${medico.disponibilidade}" th:text="${medicoAgenda.nomeSemana + ' - ' + medicoAgenda.horaDisponivel}" th:onclick="'diaSemana('+${medicoAgenda.codigoDiaSemana}+',\''+${medicoAgenda.horaDisponivel}+'\', '+${medicoAgenda.medico.codigo}+')'"></a>
+                    <input readonly="readonly" type="hidden" th:value="${medico.codigo}" />
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Dia -->
+<div id="modalDia" class="modal" style="width: 600px; height: 600px; margin: 0 auto;">
+    <div class="container paddingTop">
+    <input readonly="readonly" type="text" id="horarioConsulta" />
+        <label for="horarioConsulta"></label>
+        <input id="medicoFinal" type="hidden" />
+    <div id="novaData"></div>
+        <button id="agendar" class="btn btn-large blue">Agendar</button>
+    </div>
+</div>
+<!-- Modal Cadastro -->
+<div id="novoCadastro" class="modal" style="width: 400px;">
+    <div class="modal-content">
+        <h4 class="center">Novo cadastro</h4>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="nomeCompleto" type="text" class="validate" />
+                <label for="nomeCompleto">Nome completo</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="cpf" type="text" class="validate" />
+                <label for="cpf">CPF</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="email" type="email" class="validate" />
+                <label for="email">Email</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="telefone" type="text" class="validate" />
+                <label for="telefone">Telefone</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="senha" type="password" class="validate" />
+                <label for="senha">Senha</label>
+            </div>
+            <div class="center"><button id="salvar" class="btn btn-large blue waves-effect">Cadastrar</button></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Login -->
+<div id="entrar" class="modal" style="width: 400px;">
+    <div class="modal-content">
+        <h4 class="center">Entrar</h4>
+
+        <div class="row">
+            <form action="/Paciente/Entrar" method="post" enctype="multipart/form-data" class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="usuario" name="usr" type="email" class="validate" />
+                        <label for="usuario">Email</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="entrarSenha" name="pwd" type="password" class="validate" />
+                        <label for="entrarSenha">Senha</label>
+                    </div>
+                    <div class="center"><button type="submit" id="loginBtn" class="btn btn-large blue waves-effect">Entrar</button></div>
+                </div>
+                <div class="col s12">
+                    <a href="#">Xiii esqueci a senha ?</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<javascript th:replace="modelo :: javascripts"></javascript>
+<script>
+
+    function diaSemana(dayEnable, horaConsulta, medicoCodigo) {
+        //debugger;
+        //console.log(horaConsulta);
+        $("#medicoFinal").val(medicoCodigo);
+        $("#selecionarDia").val('');
+        $("#selecionarDia").hide();
+        $("#selecionarDia").remove();
+        $("#textoAViso").remove();
+        $("#horarioConsulta").val(horaConsulta);
+        //<input id="selecionarDia" type="text" class="datepicker" style="display: none;" />
+        $('<input id="selecionarDia" placeholder="Selecione uma data :)" type="text" class="datepicker" /><p id="textoAViso">Data será confirmada por email ou ligação telefonica.</p>').appendTo($('#novaData'));
+        var diaSemana;
+        if(dayEnable == 1){
+            soSegunda();
+        }
+        if(dayEnable == 2){
+            soTerca();
+        }
+        if(dayEnable == 3){
+            soQuarta();
+        }
+        if(dayEnable == 4){
+            soQuinta();
+        }
+        if(dayEnable == 5){
+            soSexta();
+        }
+        if(dayEnable == 6){
+            soSabado();
+        }
+    }
+
+    function soSegunda() {
+        $('#selecionarDia').pickadate({
+            labelMonthNext: 'Próximo Mês',
+            labelMonthPrev: 'Mês Anterior',
+            // Título dos seletores de mês e ano
+            labelMonthSelect: 'Selecione o Mês',
+            labelYearSelect: 'Selecione o Ano',
+            // Meses e dias da semana
+            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            weekdaysFull: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            // Letras da semana
+            weekdaysLetter: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+            //Botões
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Pronto',
+            // Formato da data que aparece no input
+            format: 'yyyy/mm/dd',
+
+            disable: [
+                { from: [0,0,0], to: new Date((new Date()).valueOf()-1000*60*60*24) },
+                1,3,4,5,6,7
+            ],
+            onClose: function() {
+                $(document.activeElement).blur()
+            },
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 0, // Creates a dropdown of 15 years to control year,
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Ok',
+            closeOnSelect: true // Close upon selecting a date,
+
+        });
+
+        $("#selecionarDia").show();
+    }
+
+    function soTerca() {
+        $('#selecionarDia').pickadate({
+            labelMonthNext: 'Próximo Mês',
+            labelMonthPrev: 'Mês Anterior',
+            // Título dos seletores de mês e ano
+            labelMonthSelect: 'Selecione o Mês',
+            labelYearSelect: 'Selecione o Ano',
+            // Meses e dias da semana
+            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            weekdaysFull: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            // Letras da semana
+            weekdaysLetter: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+            //Botões
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Pronto',
+            // Formato da data que aparece no input
+            format: 'yyyy/mm/dd',
+            disable: [
+                { from: [0,0,0], to: new Date((new Date()).valueOf()-1000*60*60*24) },
+                1,2,4,5,6,7
+            ],
+            onClose: function() {
+                $(document.activeElement).blur()
+            },
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 0, // Creates a dropdown of 15 years to control year,
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Ok',
+            closeOnSelect: true // Close upon selecting a date,
+        });
+
+        $("#selecionarDia").show();
+    }
+
+    function soQuarta() {
+        $('#selecionarDia').pickadate({
+            labelMonthNext: 'Próximo Mês',
+            labelMonthPrev: 'Mês Anterior',
+            // Título dos seletores de mês e ano
+            labelMonthSelect: 'Selecione o Mês',
+            labelYearSelect: 'Selecione o Ano',
+            // Meses e dias da semana
+            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            weekdaysFull: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            // Letras da semana
+            weekdaysLetter: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+            //Botões
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Pronto',
+            // Formato da data que aparece no input
+            format: 'yyyy/mm/dd',
+            disable: [
+                { from: [0,0,0], to: new Date((new Date()).valueOf()-1000*60*60*24) },
+                1,2,3,5,6,7
+            ],
+            onClose: function() {
+                $(document.activeElement).blur()
+            },
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 0, // Creates a dropdown of 15 years to control year,
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Ok',
+            closeOnSelect: true // Close upon selecting a date,
+        });
+
+        $("#selecionarDia").show();
+    }
+
+    function soQuinta() {
+        $('#selecionarDia').pickadate({
+            labelMonthNext: 'Próximo Mês',
+            labelMonthPrev: 'Mês Anterior',
+            // Título dos seletores de mês e ano
+            labelMonthSelect: 'Selecione o Mês',
+            labelYearSelect: 'Selecione o Ano',
+            // Meses e dias da semana
+            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            weekdaysFull: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            // Letras da semana
+            weekdaysLetter: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+            //Botões
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Pronto',
+            // Formato da data que aparece no input
+            format: 'yyyy/mm/dd',
+            disable: [
+                { from: [0,0,0], to: new Date((new Date()).valueOf()-1000*60*60*24) },
+                1,2,3,4,6,7
+            ],
+            onClose: function() {
+                $(document.activeElement).blur()
+            },
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 0, // Creates a dropdown of 15 years to control year,
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Ok',
+            closeOnSelect: true // Close upon selecting a date,
+        });
+
+        $("#selecionarDia").show();
+    }
+
+    function soSexta() {
+        $('#selecionarDia').pickadate({
+            labelMonthNext: 'Próximo Mês',
+            labelMonthPrev: 'Mês Anterior',
+            // Título dos seletores de mês e ano
+            labelMonthSelect: 'Selecione o Mês',
+            labelYearSelect: 'Selecione o Ano',
+            // Meses e dias da semana
+            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            weekdaysFull: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            // Letras da semana
+            weekdaysLetter: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+            //Botões
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Pronto',
+            // Formato da data que aparece no input
+            format: 'yyyy/mm/dd',
+            disable: [
+                { from: [0,0,0], to: new Date((new Date()).valueOf()-1000*60*60*24) },
+                1,2,3,4,5,7
+            ],
+            onClose: function() {
+                $(document.activeElement).blur()
+            },
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 0, // Creates a dropdown of 15 years to control year,
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Ok',
+            closeOnSelect: true // Close upon selecting a date,
+        });
+
+        $("#selecionarDia").show();
+    }
+
+    function soSabado() {
+        $('#selecionarDia').pickadate({
+            labelMonthNext: 'Próximo Mês',
+            labelMonthPrev: 'Mês Anterior',
+            // Título dos seletores de mês e ano
+            labelMonthSelect: 'Selecione o Mês',
+            labelYearSelect: 'Selecione o Ano',
+            // Meses e dias da semana
+            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            weekdaysFull: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            // Letras da semana
+            weekdaysLetter: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+            //Botões
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Pronto',
+            // Formato da data que aparece no input
+            format: 'yyyy/mm/dd',
+            disable: [
+                { from: [0,0,0], to: new Date((new Date()).valueOf()-1000*60*60*24) },
+                1,2,3,4,5,6
+            ],
+            onClose: function() {
+                $(document.activeElement).blur()
+            },
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 0, // Creates a dropdown of 15 years to control year,
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Ok',
+            closeOnSelect: true // Close upon selecting a date,
+        });
+
+        $("#selecionarDia").show();
+    }
+
+    $(document).ready(function(){
+        $('.parallax').parallax();
+        $('.modal').modal();
+        $("#cpf").mask("999.999.999-99");
+
+        jQuery("#telefone")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if(phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
+
+        $("#salvar").click(function() {
+
+            var cpf = $("#cpf").val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+            var nome = $("#nomeCompleto").val();
+            var email = $("#email").val();
+            var telefone = $("#telefone").val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+            var senha = $("#senha").val();
+
+            $.post(
+                "/Paciente/Gravar",
+                { cpf: cpf, nome: nome, telefone: telefone, email: email, senha: senha },
+                function(data) {
+                    if(data.ok){
+                        Materialize.toast(data.msg, 10000);
+                        $('input').val('');
+                        $('#novoCadastro').modal('close');
+                    }else{
+                        Materialize.toast(data.msg, 10000);
+                    }
+                }
+            );
+        });
+
+        $("#agendar").click(function() {
+            var medico = $("#medicoFinal").val();
+            var horarioConsulta = $("#horarioConsulta").val();
+            var selecionarDia = $("#selecionarDia").val();
+
+            $.post(
+                "/Agenda/Gravar",
+                { medico: medico, horaConsulta: horarioConsulta, diaConsulta: selecionarDia },
+                function(data) {
+                    if(data.ok){
+                        Materialize.toast(data.msg, 10000);
+                        $('#modalDia').modal('close');
+                    }else{
+                        Materialize.toast(data.msg, 10000);
+                    }
+                }
+            );
+        });
+
+        /*
+        beforeShowDay: function(date){
+                var day = date.getDay();
+                return [day == 1 || day == 4,""];
+            },
+        * */
+
+
+    });
+
+
+</script>
+
+</body>
+</html>

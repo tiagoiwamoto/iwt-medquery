@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org" lang="pt-BR">
+<head th:replace="admin-modelo :: header">
+</head>
+<body>
+<nav th:replace="admin-modelo :: navbar"></nav>
+<div class="row paddingTop">
+<div class="col s3" th:replace="admin-modelo :: admin-menu"> </div>
+
+<div class="col s9">
+    <nav>
+        <div class="nav-wrapper">
+            <div class="col s12">
+                <a href="#!">Disponibilidade</a>
+            </div>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="input-field col s12">
+            <select id="medico">
+                <option th:each="medico: ${medicos}" th:value="${medico.codigo}" th:text="${medico.nomeCompleto}"></option>
+            </select>
+            <label>Médico</label>
+        </div>
+        <div class="input-field col s6">
+            <select id="diaSemana">
+                <option value="1">Segunda-feira</option>
+                <option value="2">Terça-feira</option>
+                <option value="3">Quarta-feira</option>
+                <option value="4">Quinta-feira</option>
+                <option value="5">Sexta-feira</option>
+                <option value="6">Sábado</option>
+            </select>
+            <label>Dias da semana</label>
+        </div>
+        <div class="input-field col s4">
+            <input id="hora" type="text" class="timepicker" />
+        </div>
+        <div class="input-field col s2">
+            <button id="salvar" class="btn btn-large blue">Salvar</button>
+        </div>
+    </div>
+</div>
+</div>
+<javascript th:replace="admin-modelo :: javascripts"></javascript>
+<script>
+    $(document).ready(function(){
+
+        $("#salvar").click(function() {
+            var medico = $("#medico").val();
+            var diaSemana = $("#diaSemana").val();
+            var hora = $("#hora").val();
+
+            console.log(diaSemana);
+
+            console.log(hora);
+
+            $.post(
+                "/Disponibilidade/Nova",
+                { medico: medico, diaSemana: diaSemana, horaDisponivel: hora },
+                function(data) {
+                    if(data.ok){
+                        Materialize.toast(data.msg, 4000);
+                        Materialize.toast("Voltar para lista de especializações? " + '<a href="/Agenda/Medico" class='btn blue'>Sim</a>', 10000);
+                        $("input").val("");
+                        $('#descricao').val("");
+                        $('#chips').material_chip({
+                            placeholder: 'Palavra chave',
+                            secondaryPlaceholder: '+Tag',
+                        });
+                    }else{
+                        Materialize.toast(data.msg, 4000);
+
+                    }
+
+                }
+            );
+        });
+
+        $(".button-collapse").sideNav();
+
+        $('select').material_select();
+
+        $('.timepicker').pickatime({
+            default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+            fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+            twelvehour: false, // Use AM/PM or 24-hour format
+            donetext: 'OK', // text for done-button
+            cleartext: 'Clear', // text for clear-button
+            canceltext: 'Cancel', // Text for cancel-button,
+            container: undefined, // ex. 'body' will append picker to body
+            autoclose: false, // automatic close timepicker
+            ampmclickable: true, // make AM PM clickable
+            aftershow: function(){} //Function for after opening timepicker
+        });
+    });
+
+</script>
+</body>
+</html>
